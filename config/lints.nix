@@ -19,6 +19,7 @@
   "--deny=clippy::pedantic"
   "--deny=clippy::nursery"
   "--deny=clippy::cargo"
+  "--allow=clippy::multiple_crate_versions"
   "--deny=clippy::allow_attributes"
   "--deny=clippy::allow_attributes_without_reason"
   "--deny=clippy::arbitrary_source_item_ordering"
