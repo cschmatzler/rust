@@ -70,7 +70,6 @@
   "--deny=clippy::unnecessary_self_imports"
   "--deny=clippy::unneeded_field_pattern"
   "--deny=clippy::unused_result_ok"
-  "--deny=clippy::unused_trait_names"
   "--deny=clippy::unwrap_in_result"
   "--deny=clippy::unwrap_used"
   "--deny=clippy::verbose_file_reads"
