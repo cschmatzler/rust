@@ -1,34 +1,34 @@
 { inputs }:
-{ lib, pkgs, ... }:
-
-let
-  rust =
-    (inputs.rust-overlay.lib.mkRustBin { } pkgs).fromRustupToolchainFile
-      ../config/rust-toolchain.toml;
-  mbx = pkgs.callPackage ./mr-boxington.nix { };
-  cargo = pkgs.writeShellScriptBin "cargo" ''
-    export CARGO=${rust}/bin/cargo
-    export MBX_CARGO_SHIM_MODE=1
-    export MBX_CARGO_SHIM_PATH="$0"
-    exec ${mbx}/bin/mbx "$@"
-  '';
-  lintFlags = lib.concatMapStringsSep " " (lint: "--warn=${lint}") (import ../config/lints.nix);
-in
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   languages.rust = {
     enable = true;
     # mbx 1.21 skips library caching with an explicit linker.
     clangLinker.enable = false;
-    toolchainPackage = rust;
+    toolchainPackage =
+      (inputs.rust-overlay.lib.mkRustBin { } pkgs).fromRustupToolchainFile
+        ../config/rust-toolchain.toml;
     toolchain = lib.genAttrs [ "cargo" "rustc" "clippy" "rustfmt" "rust-analyzer" "rust-src" ] (
-      _: rust
+      _: config.languages.rust.toolchainPackage
     );
-    lsp.package = rust;
+    lsp.package = config.languages.rust.toolchainPackage;
   };
 
   packages = [
-    (lib.hiPrio cargo)
-    mbx
+    (lib.hiPrio (
+      pkgs.writeShellScriptBin "cargo" ''
+        export CARGO=${config.languages.rust.toolchainPackage}/bin/cargo
+        export MBX_CARGO_SHIM_MODE=1
+        export MBX_CARGO_SHIM_PATH="$0"
+        exec ${pkgs.callPackage ./mr-boxington.nix { }}/bin/mbx "$@"
+      ''
+    ))
+    (pkgs.callPackage ./mr-boxington.nix { })
     pkgs.cargo-nextest
   ];
 
@@ -44,7 +44,9 @@ in
 
   scripts = {
     fmt.exec = ''cargo fmt --all "$@"'';
-    lint.exec = ''cargo clippy --workspace --all-targets "$@" -- -D warnings ${lintFlags}'';
+    lint.exec = ''
+      cargo clippy --workspace --all-targets "$@" -- -D warnings ${lib.escapeShellArgs (import ../config/lints.nix)}
+    '';
     rust-test.exec = ''
       cargo nextest run --workspace --tool-config-file cschmatzler:${../config/nextest.toml} "$@" &&
       cargo test --workspace --doc
