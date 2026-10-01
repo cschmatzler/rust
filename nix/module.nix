@@ -13,15 +13,22 @@
     toolchainPackage =
       (inputs.rust-overlay.lib.mkRustBin { } pkgs).fromRustupToolchainFile
         ../config/rust-toolchain.toml;
-    toolchain = lib.genAttrs [ "cargo" "rustc" "clippy" "rustfmt" "rust-analyzer" "rust-src" ] (
-      _: config.languages.rust.toolchainPackage
-    );
+    toolchain =
+      lib.genAttrs [ "cargo" "rustc" "clippy" "rust-analyzer" "rust-src" ] (
+        _: config.languages.rust.toolchainPackage
+      )
+      // {
+        # Import grouping requires nightly rustfmt; compilation stays stable.
+        rustfmt = (inputs.rust-overlay.lib.mkRustBin { } pkgs).nightly."2026-09-30".rustfmt;
+      };
     lsp.package = config.languages.rust.toolchainPackage;
   };
 
   env.MBX_TARGET_KEEP = config.devenv.root;
+  env.RUSTFMT = "${config.languages.rust.toolchain.rustfmt}/bin/rustfmt";
 
   packages = [
+    (lib.hiPrio config.languages.rust.toolchain.rustfmt)
     (lib.hiPrio (
       pkgs.writeShellScriptBin "cargo" ''
         export CARGO=${config.languages.rust.toolchainPackage}/bin/cargo
