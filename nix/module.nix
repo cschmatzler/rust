@@ -54,17 +54,4 @@
     copyMode = "copy";
   };
 
-  scripts = {
-    fmt.exec = ''cargo fmt --all "$@"'';
-    lint.exec = ''
-      cargo clippy --workspace --all-targets "$@" -- -D warnings ${lib.escapeShellArgs (import ../config/lints.nix)}
-    '';
-    rust-test.exec = ''
-      cargo nextest run --workspace --tool-config-file cschmatzler:${../config/nextest.toml} "$@" &&
-      cargo test --workspace --doc
-    '';
-    check.exec = "cargo fmt --all -- --check && lint && rust-test";
-  };
-
-  enterTest = "check";
 }

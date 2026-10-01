@@ -1,6 +1,6 @@
 # Rust style
 
-Shared Rust tooling: Clippy, rustfmt, nextest, doctests, and
+Shared Rust tooling: Clippy, rustfmt, nextest, and
 [Mr. Boxington](https://mr-boxington.jdx.dev) caching.
 
 `devenv.nix`:
@@ -19,11 +19,20 @@ inputs:
     follows: rust-style/nixpkgs
 ```
 
-Use devenv 2.4+. `devenv shell` provides `fmt`, `lint`, `rust-test`, and `check`.
-`devenv test` runs the full check. Ordinary Cargo builds use Mr. Boxington.
+Enter `devenv shell` and invoke Cargo directly. The shell wraps `cargo` in
+Mr. Boxington and forwards every command and argument unchanged.
+Use `cargo nextest run` when you want nextest.
+
+```bash
+cargo build
+cargo test --workspace
+cargo nextest run --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+cargo fmt --all -- --check
+```
 
 Activation overwrites `rustfmt.toml` and `clippy.toml`; ignore those two files
-in Git. `lint` applies the shared lint rules. Nextest overrides go in
+in Git. Nextest overrides go in
 `.config/nextest.toml`. Commit `devenv.lock`.
 
 Update with `devenv update rust-style`. The next activation applies the new rules.
