@@ -19,6 +19,8 @@
     lsp.package = config.languages.rust.toolchainPackage;
   };
 
+  env.MBX_TARGET_KEEP = config.devenv.root;
+
   packages = [
     (lib.hiPrio (
       pkgs.writeShellScriptBin "cargo" ''
