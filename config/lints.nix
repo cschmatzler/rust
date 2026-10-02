@@ -1,5 +1,6 @@
 [
   "--forbid=unsafe_code"
+  "--deny=warnings"
   "--deny=elided_lifetimes_in_paths"
   "--deny=explicit_outlives_requirements"
   "--deny=let_underscore_drop"
@@ -20,6 +21,9 @@
   "--deny=clippy::nursery"
   "--deny=clippy::cargo"
   "--allow=clippy::multiple_crate_versions"
+  # Prefer rustc's unreachable_pub policy: private modules keep pub(crate)
+  # visibility instead of introducing public items that cannot be exported.
+  "--allow=clippy::redundant_pub_crate"
   "--deny=clippy::allow_attributes"
   "--deny=clippy::allow_attributes_without_reason"
   "--deny=clippy::arbitrary_source_item_ordering"
