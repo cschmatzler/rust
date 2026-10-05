@@ -7,6 +7,8 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
+    mr-boxington.url = "github:jdx/mr-boxington";
+    mr-boxington.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -23,16 +25,10 @@
     {
       devenvModules.default = import ./nix/module.nix { inherit inputs; };
 
-      packages = forAllSystems (
-        system:
-        let
-          pkgs = pkgsFor system;
-        in
-        {
-          mr-boxington = pkgs.callPackage ./nix/mr-boxington.nix { };
-          default = self.packages.${system}.mr-boxington;
-        }
-      );
+      packages = forAllSystems (system: {
+        mr-boxington = inputs.mr-boxington.packages.${system}.mbx;
+        default = self.packages.${system}.mr-boxington;
+      });
 
       formatter = forAllSystems (system: (pkgsFor system).nixfmt);
 

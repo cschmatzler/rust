@@ -5,6 +5,9 @@
   pkgs,
   ...
 }:
+let
+  mr-boxington = inputs.mr-boxington.packages.${pkgs.stdenv.hostPlatform.system}.mbx;
+in
 {
   languages.rust = {
     enable = true;
@@ -37,10 +40,10 @@
         export CARGO=${config.languages.rust.toolchainPackage}/bin/cargo
         export MBX_CARGO_SHIM_MODE=1
         export MBX_CARGO_SHIM_PATH="$0"
-        exec ${pkgs.callPackage ./mr-boxington.nix { }}/bin/mbx "$@"
+        exec ${mr-boxington}/bin/mbx "$@"
       ''
     ))
-    (pkgs.callPackage ./mr-boxington.nix { })
+    mr-boxington
     pkgs.cargo-nextest
   ];
 

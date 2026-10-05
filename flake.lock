@@ -21,6 +21,26 @@
         "type": "github"
       }
     },
+    "mr-boxington": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791159569,
+        "narHash": "sha256-3vhcXb63YTF8NRg2/oPWYblkWka4rYOJNx4ednYzTLM=",
+        "owner": "jdx",
+        "repo": "mr-boxington",
+        "rev": "27bc6a265560dfce39dea7fe235a235d1efdf889",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jdx",
+        "repo": "mr-boxington",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "inputs": {
         "nixpkgs-src": "nixpkgs-src"
@@ -60,6 +80,7 @@
     "root": {
       "inputs": {
         "fenix": "fenix",
+        "mr-boxington": "mr-boxington",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }
