@@ -56,5 +56,9 @@ in
     # A store symlink prevents mbx from caching Clippy results.
     copyMode = "copy";
   };
+  files.".config/nextest.toml" = {
+    source = ../config/nextest.toml;
+    copyMode = "copy";
+  };
 
 }

@@ -31,8 +31,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all -- --check
 ```
 
-Activation overwrites `rustfmt.toml` and `clippy.toml`; ignore those two files
-in Git. Nextest overrides go in
-`.config/nextest.toml`. Commit `devenv.lock`.
+Activation overwrites `rustfmt.toml`, `clippy.toml`, and `.config/nextest.toml`;
+ignore those three files in Git. Commit `devenv.lock`.
 
 Update with `devenv update rust-style`. The next activation applies the new rules.
