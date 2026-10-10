@@ -25,6 +25,7 @@
   # visibility instead of introducing public items that cannot be exported.
   "--allow=clippy::redundant_pub_crate"
   "--allow=clippy::missing_errors_doc"
+  "--allow=clippy::missing_panics_doc"
   "--deny=clippy::allow_attributes"
   "--deny=clippy::allow_attributes_without_reason"
   "--deny=clippy::arbitrary_source_item_ordering"
