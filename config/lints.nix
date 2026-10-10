@@ -24,6 +24,8 @@
   # Prefer rustc's unreachable_pub policy: private modules keep pub(crate)
   # visibility instead of introducing public items that cannot be exported.
   "--allow=clippy::redundant_pub_crate"
+  # Typed errors document the failures; an `# Errors` section would restate the signature.
+  "--allow=clippy::missing_errors_doc"
   "--deny=clippy::allow_attributes"
   "--deny=clippy::allow_attributes_without_reason"
   "--deny=clippy::arbitrary_source_item_ordering"
