@@ -25,7 +25,7 @@ in
       )
       // {
         # Import grouping requires nightly rustfmt; compilation stays stable.
-        rustfmt = (inputs.rust-overlay.lib.mkRustBin { } pkgs).nightly."2026-09-30".rustfmt;
+        rustfmt = (inputs.rust-overlay.lib.mkRustBin { } pkgs).nightly."2026-10-12".rustfmt;
       };
     lsp.package = config.languages.rust.toolchainPackage;
   };
