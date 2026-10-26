@@ -27,10 +27,30 @@
     {
       devenvModules.default = import ./nix/module.nix { inherit inputs; };
 
-      packages = forAllSystems (system: {
-        mr-boxington = inputs.mr-boxington.packages.${system}.mbx;
-        default = self.packages.${system}.mr-boxington;
-      });
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = pkgsFor system;
+          blazeSource = pkgs.applyPatches {
+            name = "blaze-nix-source";
+            src = inputs.blaze;
+            patches = [ ./nix/blaze-glibc.patch ];
+          };
+          blaze = (import "${blazeSource}/flake.nix").outputs (
+            inputs.blaze.inputs
+            // {
+              self = inputs.blaze // {
+                outPath = blazeSource;
+              };
+            }
+          );
+        in
+        {
+          blaze = blaze.packages.${system}.blaze;
+          mr-boxington = inputs.mr-boxington.packages.${system}.mbx;
+          default = self.packages.${system}.mr-boxington;
+        }
+      );
 
       formatter = forAllSystems (system: (pkgsFor system).nixfmt);
 

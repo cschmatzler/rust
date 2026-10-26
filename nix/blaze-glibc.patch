@@ -1,0 +1,16 @@
+diff --git a/flake.nix b/flake.nix
+--- a/flake.nix
++++ b/flake.nix
+@@ -102,6 +102,11 @@
+           # the profile would find none of them.
+           auditable = false;
+           buildPhase = ''
+             runHook preBuild
++            # Nix supplies the linked libc through the package closure.
++            ${pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
++              substituteInPlace .github/scripts/build_release.py \
++                --replace-fail 'GLIBC = (2, 34)' 'GLIBC = (${pkgs.lib.replaceStrings [ "." ] [ ", " ] pkgs.glibc.version})'
++            ''}
+             python3 -I .github/scripts/build_release.py --target ${triple} --profdata ${pgoProfile} --out shipped
+             runHook postBuild
+           '';

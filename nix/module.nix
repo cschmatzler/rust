@@ -45,7 +45,7 @@ in
       ''
     ))
     mr-boxington
-    inputs.blaze.packages.${pkgs.stdenv.hostPlatform.system}.blaze
+    inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.blaze
     pkgs.cargo-nextest
   ];
 
