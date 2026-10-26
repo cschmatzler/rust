@@ -9,6 +9,8 @@
     fenix.inputs.nixpkgs.follows = "nixpkgs";
     mr-boxington.url = "github:jdx/mr-boxington";
     mr-boxington.inputs.nixpkgs.follows = "nixpkgs";
+    blaze.url = "github:indexable-inc/blaze";
+    blaze.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

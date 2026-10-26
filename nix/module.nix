@@ -31,6 +31,7 @@ in
   };
 
   env.MBX_TARGET_KEEP = config.devenv.root;
+  env.MBX_BLAZE = "1";
   env.RUSTFMT = "${config.languages.rust.toolchain.rustfmt}/bin/rustfmt";
 
   packages = [
@@ -44,6 +45,7 @@ in
       ''
     ))
     mr-boxington
+    inputs.blaze.packages.${pkgs.stdenv.hostPlatform.system}.blaze
     pkgs.cargo-nextest
   ];
 
